@@ -1,5 +1,11 @@
 Vue Blog App
 A simple blogging app created using Vue, Express and MongoDB
+Uses an Atlas sandbox at mongodb.com
 
 run:
 > npm run dev
+
+
+
+testing POST without any front end:    (using Windows Powershell)
+> curl --% --request POST --header "Content-Type: application/json" --data  "{\"text\":\"I like Vue\"}" localhost:3000/api/posts
