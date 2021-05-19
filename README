@@ -1,0 +1,5 @@
+Vue Blog App
+A simple blogging app created using Vue, Express and MongoDB
+
+run:
+> npm run dev

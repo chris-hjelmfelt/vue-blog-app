@@ -1,0 +1,18 @@
+{
+  "name": "vue-blog-app",
+  "version": "1.0.0",
+  "description": "a blog made with express and vue",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
+  "author": "Chris H",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.7"
+  }
+}
