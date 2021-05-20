@@ -1,4 +1,4 @@
-Vue Blog App
+## Vue Blog App
 A simple blogging app created using Vue, Express and MongoDB
 Uses an Atlas sandbox at mongodb.com
 
@@ -7,5 +7,12 @@ run:
 
 
 
-testing POST without any front end:    (using Windows Powershell)
+### Testing POST without any front end
+Using Git Bash:
+> curl --request POST --header "Content-Type: application/json"  --data '{"text":"I am learning Curl"}' localhost:3000/api/posts
+> curl -X DELETE localhost:3000/api/posts/60a592751c83c23b18403b19
+
+Using Windows Powershell:
 > curl --% --request POST --header "Content-Type: application/json" --data  "{\"text\":\"I like Vue\"}" localhost:3000/api/posts
+(on Win 10 you may need to run > Remove-item alias:curl )
+
