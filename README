@@ -1,9 +1,17 @@
 ## Vue Blog App
-A simple blogging app created using Vue, Express and MongoDB
+A simple blogging app created using Vue, Express, and MongoDB
 Uses an Atlas sandbox at mongodb.com
 
-run:
+
+run backend:
 > npm run dev
+
+
+run frontend:
+> cd client
+> npm run serve
+
+
 
 
 
