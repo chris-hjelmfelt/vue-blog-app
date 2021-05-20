@@ -1,17 +1,16 @@
-import { post } from "../../server/routes/api/posts";
-import axios from axios;
+import axios from 'axios';
 
-const url =  'http://localhost:5000/api/posts/';
+const url = 'http://localhost:5000/api/posts/';
 
 class PostService {
   // Get Posts
-  static getPosts() {
+  static getPosts() {   // static allows it to be used directly without instanciating anything
     return new Promise(async (resolve, reject) => {
       try {
         const res = await axios.get(url);
         const data = res.data;
         resolve(
-          data.mqp(post => ({
+          data.map(post => ({
             ...post,
             createdAt: new Date(post.createdAt)
           })

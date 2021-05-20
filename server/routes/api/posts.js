@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require ('cors');
 const mongodb = require('mongodb');
 const router = express.Router();
 
