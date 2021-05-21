@@ -12,7 +12,7 @@ class PostService {
         resolve(
           data.map(post => ({
             ...post,
-            createdAt: new Date(post.createdAt)
+            createdAt: new Date(post.createdat)
           })
         ));
       } catch(err) {
@@ -22,8 +22,8 @@ class PostService {
   }
 
   // Add Post
-  static insertPost(text) {
-    return axios.post(url, {text});
+  static insertPost(title) {
+    return axios.post(url, {title});
   }
 
   // Delete Post

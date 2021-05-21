@@ -1,49 +1,74 @@
-const express = require('express');
-const cors = require ('cors');
-const mongodb = require('mongodb');
-const router = express.Router();
+const express = require('express'),
+path = require('path'),
+{Client} = require('pg'),
+router = express.Router();
+
 
 
 // Get Posts
 router.get('/', async (req, res) => {  // slash references where we are now not root of the project
-  const posts = await loadPostsCollection();
-  res.send(await posts.find({}).toArray());
+  const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'vue_blog',
+    password: 'abc123',
+    port: 5432
+  });
+  client.connect()
+  client.query('SELECT * from blogposts', function(err, result){
+    if(err){
+        console.log(err);
+    } else{
+      const mypost = JSON.stringify(result.rows);
+      res.send(mypost);
+    }        
+    client.end()
+  });   
 });   
+
 
 // Add Post
 router.post('/', async (req, res) => {  // slash references where we are now not root of the project
-  const posts = await loadPostsCollection();
-  await posts.insertOne({
-    text: req.body.text,
-    createdAt: new Date()
+  const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'vue_blog',
+    password: 'abc123',
+    port: 5432
   });
-  res.status(201).send();
+  client.connect()
+  client.query("INSERT INTO blogposts VALUES(uuid_generate_v4(), $1, 'Chris H', 'xxxxxxxxxxx', NOW(), '{\"tags\":\"coding\"}')", 
+  [req.body.title], function(err, result){
+      if(err){
+          console.log(err);
+      } else { 
+          res.redirect('/api/posts');
+      }
+      client.end()
+  });
 });  
-
-// testing with no front end - put the following into Git Bash (see README for powershell notes) and change the text to get a new post
-// curl --request POST --header "Content-Type: application/json"  --data '{"text":"I am learning Curl"}' localhost:3000/api/posts
 
 
 // Delete Post
-router.delete('/:id', async (req, res) => {
-  const posts = await loadPostsCollection();
-  await posts.deleteOne({_id: new mongodb.ObjectID(req.params.id)});
-  res.status(200).send();
+router.delete('/:post_id', async (req, res) => {
+  const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'vue_blog',
+    password: 'abc123',
+    port: 5432
+  });
+  client.connect()
+  client.query("DELETE FROM blogposts WHERE post_id = $1", [req.params.post_id], function(err, result){
+      if(err){
+          console.log(err);
+      } else {
+          res.sendStatus(200);
+      }            
+      client.end()
+  });        
 });
 
-// curl -X DELETE localhost:3000/api/posts/60a592751c83c23b18403b19
-
-
-
-// connect to the mongodb database
-async function loadPostsCollection() {
-  const client = await mongodb.MongoClient.connect(
-    "mongodb+srv://chris:zxc123EE@blog1.lv7is.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", 
-    {useNewUrlParser: true}
-  )
-
-  return client.db('Blog1').collection('posts')
-}
 
 module.exports = router;
 
