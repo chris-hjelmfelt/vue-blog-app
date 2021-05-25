@@ -1,20 +1,35 @@
 <template>
-  <div class="container">
+  <div class="container">    
     <h1>Posts</h1>
+    <!-- The form for new posts -->
     <div class="create-posts">
       <label for="create-posts">Create a new post</label><br />
-      <input type="text" id="createpost" v-model="title" placeholder="say something">
+      <input type="text" id="createtitle" v-model="title" placeholder="say something"><br />
+      <textarea type="text" id="createpost" v-model="post_body" rows="6" cols="30">
+      </textarea><br />
       <button v-on:click="createPost" value="Submit">Post</button>
     </div>
     <hr>
+    <!-- The Posts start here -->
     <p class="error" v-if="error">{{ error }}</p>
-    <div class="posts-container"></div>
     <div class="post" v-for="post in posts" v-bind:item="post" v-bind:key="post.post_id" v-on:dblclick=deletePost(post.post_id)>
-      {{ post.post_date }}
-      <p class="text">{{ post.title }}</p>
+      <div class="post-info">
+        {{ post.post_date }} 
+        <p class="text">{{ post.author }} </p>        
+      </div> 
+      <div class="main-body">    
+        <div class="message">    
+          <p class="text">{{ post.title }}</p>
+          <p class="text">{{ post.post_body }}</p>
+        </div>
+        <div class="tags">
+          Tags: {{ post.tags.tags }}
+        </div>
+      </div>           
     </div>
   </div>
 </template>
+
 
 <script>
 import PostService from '../PostService';
@@ -25,7 +40,8 @@ export default {
     return {
       posts: [],
       error: '',
-      title: ''
+      title: '',
+      post_body: ''
     }
   },
   async created() {
@@ -37,9 +53,10 @@ export default {
   },
   methods: {
     async createPost() {
-      await PostService.insertPost(this.title);
+      await PostService.insertPost(this.title, this.post_body);
       this.posts = await PostService.getPosts();
-      this.title = "";
+      this.title = "";   // clears the input field after posting
+      this.post_body = "";
     },
      async deletePost(id) {
       await PostService.deletePost(id);
@@ -48,6 +65,7 @@ export default {
   }
 }
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
@@ -69,6 +87,18 @@ export default {
       border: 1px solid #5bd658; 
       padding: 10px 10px 30px 10px; 
       margin-bottom: 15px; 
+      height: 100px;
+    }
+
+    div.main-body { 
+      width: 75%; 
+      float: left;
+      border-left: 1px solid #5bd658; 
+    }
+
+    div.post-info {
+      width: 24%;
+      float: left;      
     }
 
     p.title { 
@@ -76,7 +106,17 @@ export default {
       font-weight: 700; 
       margin-bottom: 0; 
     }
+    #createtitle {
+      width: 300px;
+    }
     #createpost {
       width: 300px;
+    }
+    .message {
+      height: calc(100px - 10px);
+    }
+    .tags {
+      font-size: 80%;
+      height: 10px;      
     }
 </style>

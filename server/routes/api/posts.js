@@ -37,12 +37,12 @@ router.post('/', async (req, res) => {  // slash references where we are now not
     port: 5432
   });
   client.connect()
-  client.query("INSERT INTO blogposts VALUES(uuid_generate_v4(), $1, 'Chris H', 'xxxxxxxxxxx', NOW(), '{\"tags\":\"coding\"}')", 
-  [req.body.title], function(err, result){
+  client.query("INSERT INTO blogposts VALUES(uuid_generate_v4(), $1, 'Chris H', $2, NOW(), '{\"tags\":\"coding\"}')", 
+  [req.body.title, req.body.post_body], function(err, result){
       if(err){
-          console.log(err);
+        console.log(err);
       } else { 
-          res.redirect('/api/posts');
+        res.redirect('/api/posts');
       }
       client.end()
   });
