@@ -10,7 +10,7 @@
     <p class="error" v-if="error">{{ error }}</p>
     <div class="posts-container"></div>
     <div class="post" v-for="post in posts" v-bind:item="post" v-bind:key="post.post_id" v-on:dblclick=deletePost(post.post_id)>
-      {{ post.createdAt }}
+      {{ post.post_date }}
       <p class="text">{{ post.title }}</p>
     </div>
   </div>

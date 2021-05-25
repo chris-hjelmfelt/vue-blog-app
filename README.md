@@ -41,6 +41,8 @@ then go to localhost:8080
 **Create  a new table:**  
 CREATE TABLE blogposts (post_id UUID PRIMARY KEY, title VARCHAR(100), author VARCHAR(100), post_body TEXT, createdAt TIMESTAMP, tags JSON)  
 
+SELECT post_id, title, author, post_body, date(substring(createdAt), tags FROM blogposts;
+
 **Insert a new row:**  
 CREATE EXTENSION "uuid-ossp";  (this is only needed in pgadmin)
 INSERT INTO blogposts VALUES(uuid_generate_v4(), 'I like Vue', 'Chris H', 'Im sure that Vue is better than react for this project Im working on', NOW(), '{"tags":"coding"}');
