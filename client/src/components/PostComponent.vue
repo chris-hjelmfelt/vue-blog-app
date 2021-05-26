@@ -2,8 +2,8 @@
   <div class="container">    
     <h1>Posts</h1>
     <!-- The form for new posts -->
-    <div class="create-posts">
-      <label for="create-posts">Create a new post</label><br />
+    <button class="openbtn" v-on:click="openNav()">Create a new post</button>
+    <div class="create-posts" ref="jedi">
       <input type="text" id="createtitle" v-model="title" placeholder="say something"><br />
       <textarea type="text" id="createpost" v-model="post_body" rows="6" cols="30">
       </textarea><br />
@@ -34,6 +34,8 @@
 <script>
 import PostService from '../PostService';
 
+
+
 export default {
   name: 'PostComponent',
   data() {
@@ -52,6 +54,13 @@ export default {
     }
   },
   methods: {
+    openNav() {   /* Show the create post form */
+      if (this.$refs.jedi.style.height == "250px"){
+        this.$refs.jedi.style.height = "0px";
+      } else {
+        this.$refs.jedi.style.height = "250px";
+      }  
+    },
     async createPost() {
       await PostService.insertPost(this.title, this.post_body);
       this.posts = await PostService.getPosts();
@@ -61,9 +70,11 @@ export default {
      async deletePost(id) {
       await PostService.deletePost(id);
       this.posts = await PostService.getPosts();
-    }
-  }
+    }     
+  }  
 }
+
+
 </script>
 
 
@@ -74,6 +85,11 @@ export default {
       margin: 0 auto; 
       background-color: #fff;
     }
+     
+    div.create-posts {       
+      height: 0px;
+      overflow-y: hidden; /* Disable horizontal scroll */
+     }
 
     p.error { 
       border: 1px solid #ff5b5f; 
