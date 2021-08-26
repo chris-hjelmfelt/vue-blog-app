@@ -13,7 +13,7 @@
       <hr>
       <!-- The Posts start here -->
       <p class="error" v-if="error">{{ error }}</p>
-      <div class="post" v-for="post in posts" v-bind:item="post" v-bind:key="post.post_id" v-on:dblclick=deletePost(post.post_id)>
+      <div class="post" v-for="post in somePosts" v-bind:item="post" v-bind:key="post.post_id" v-on:dblclick=deletePost(post.post_id)>
         <div class="post-info">
           {{ post.post_date }} 
           <p class="text">{{ post.author }} </p>        
@@ -29,9 +29,13 @@
         </div>           
       </div>     
     </div>
+    <!-- Tag list -->
     <div class="all-tags">
       <h4>Tags:</h4>
-      <p ref="mytags"> </p>
+      <div class="tags">
+        <div class="single-tag" v-for="tag in tags" :key=tag v-on:click="sortPosts(tag)">{{ tag }}</div>
+        <div class="single-tag" v-on:click="sortPosts('All')">All</div>
+      </div>
     </div>
   </div>
   
@@ -41,22 +45,23 @@
 <script>
 import PostService from '../PostService';
 
-
-
 export default {
   name: 'PostComponent',
   data() {
     return {
-      posts: [],
+      posts: [],      
+      somePosts: [],
       error: '',
       title: '',
-      post_body: ''
+      post_body: '',
+      tags: []
     }
   },
   async created() {
     try {
       this.posts = await PostService.getPosts();
       console.log(this.posts);
+      this.somePosts = this.posts
       this.setTags();
     } catch(err) {
       this.error = err.message;
@@ -72,8 +77,19 @@ export default {
     },
     setTags() {
       var tagValues = this.posts.map( (value) => value.tags.tags).filter( (value, index, _arr) => _arr.indexOf(value) == index);
-      console.log(tagValues);
-      this.$refs.mytags.innerHTML = tagValues.toString();
+      this.tags = tagValues
+    },
+    sortPosts: function(tagValue) {
+      this.somePosts = [];
+      if (tagValue === "All") {
+        this.somePosts = this.posts
+        return
+      }
+      for (var i=0; i < this.posts.length; i++) {        
+        if (this.posts[i].tags.tags.includes(tagValue)) {
+          this.somePosts.push(this.posts[i])
+        }
+      }
     },
     async createPost() {
       await PostService.insertPost(this.title, this.post_body);
@@ -84,7 +100,8 @@ export default {
     },
      async deletePost(id) {
       await PostService.deletePost(id);
-      this.posts = await PostService.getPosts();
+      this.posts = await PostService.getPosts();      
+      this.somePosts = this.posts
     }     
   }  
 }
@@ -100,7 +117,8 @@ export default {
       margin: 0 auto; 
     }
 
-    div.container { 
+    div.container {       
+      width: 75%; 
       max-width: 800px; 
       margin: 0 auto; 
       background-color: #fff;
@@ -152,14 +170,21 @@ export default {
     .message {
       height: calc(100px - 10px);
     }
-    .tags {
-      font-size: 80%;
-      height: 10px;      
-    }
-
+   
     div.all-tags {
       width: 190px;
+      height: 400px; 
       float: left;
-      border: 1px solid black;
+      border: 1px solid #5bd658;
+      overflow: hidden;
+    }
+
+    .tags {
+      font-size: 80%;
+      height: 10px;   
+      color: rgb(0, 150, 102);
+    }
+    .single-tag{
+      color: purple;
     }
 </style>

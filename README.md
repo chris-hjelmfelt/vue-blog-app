@@ -7,7 +7,7 @@ A simple blogging app created using Vue, Express, and Postgres.
 ```console
 > npm run dev  
 ```
-view it at localhost:5000/api/posts  
+View it at localhost:5000/api/posts  
 
 
 **Run frontend:**
@@ -21,13 +21,14 @@ then go to localhost:8080
 ---
 
 ### Testing POST without any front end  
-**Using Git Bash:**
+If GET is working correctly it should display in browser  
+**Using Git Bash:**  
 ```console
 > curl --request POST --header "Content-Type: application/json"  --data '{"title":"I am learning Curl"}' localhost:3000/api/posts  
-> curl -X DELETE localhost:3000/api/posts/60a592751c83c23b18403b19
+> curl -X DELETE localhost:3000/api/posts/60a592751c83c23b18403b19  
 ```
 
-**Using Windows Powershell:**
+**Using Windows Powershell:**  
 ```console
 > curl --% --request POST --header "Content-Type: application/json" --data  "{\"title\":\"I like Vue\"}" localhost:3000/api/posts  
 ```

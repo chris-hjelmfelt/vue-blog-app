@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {  // slash references where we are now not 
     port: 5432
   });
   client.connect()
-  client.query("SELECT post_id, title, author, post_body, to_char(createdat, 'Mon DD, YYYY') as post_date, tags FROM blogposts", function(err, result){
+  client.query("SELECT post_id, title, author, post_body, to_char(createdat, 'Mon DD, YYYY') as post_date, tags FROM blogposts ORDER BY createdat", function(err, result){
     if(err){
         console.log(err);
     } else{
